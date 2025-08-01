@@ -5,10 +5,106 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.key === 'Enter') handleCommand(this);
         });
     });
+    loadProgress();
+
+    document.querySelectorAll('.git-graph-container').forEach(container => {
+        renderGraph(container, gitRepo);
+    });
 });
 
+let gitRepo = {
+    commits: {
+        'c0': { parent: null, msg: 'Initial state' },
+        'c1': { parent: 'c0', msg: 'Add initial README' }
+    },
+    branches: {
+        'main': 'c1'
+    },
+    HEAD: 'main'
+};
+
 const totalChapters = document.querySelectorAll('.chapter[data-chapter]').length;
-let completedChapters = new Set();
+let progress = {};
+
+function loadProgress() {
+    const savedProgress = localStorage.getItem('gitTutorialProgress');
+    if (savedProgress) {
+        progress = JSON.parse(savedProgress);
+    }
+
+    const REVIEW_INTERVAL = 20 * 1000; // 20 seconds
+
+    document.querySelectorAll('.chapter[data-chapter]').forEach(chapter => {
+        const chapterNum = chapter.dataset.chapter;
+        if (progress[chapterNum]) {
+            chapter.classList.add('completed');
+
+            const timeSinceCompletion = Date.now() - progress[chapterNum].timestamp;
+            if (timeSinceCompletion > REVIEW_INTERVAL) {
+                chapter.classList.add('review-due');
+            }
+        }
+    });
+    updateProgressBar();
+}
+
+function saveProgress() {
+    localStorage.setItem('gitTutorialProgress', JSON.stringify(progress));
+}
+
+function renderGraph(container, repoState) {
+    if (!container) return;
+    container.innerHTML = '<h4>Git Graph</h4>';
+    const graphDiv = document.createElement('div');
+    graphDiv.className = 'git-graph';
+    
+    let commitIds = new Set();
+    for (const branch in repoState.branches) {
+        let currentId = repoState.branches[branch];
+        while (currentId) {
+            commitIds.add(currentId);
+            currentId = repoState.commits[currentId].parent;
+        }
+    }
+    let commitChain = Array.from(commitIds).sort();
+
+    const commitLine = document.createElement('div');
+    commitLine.className = 'commit-line';
+
+    commitChain.forEach((commitId, index) => {
+        const commitNode = document.createElement('div');
+        commitNode.className = 'commit-node';
+        commitNode.textContent = commitId;
+        commitNode.style.left = `${index * 80}px`;
+        
+        let labelOffset = 0;
+        for (const branchName in repoState.branches) {
+            if (repoState.branches[branchName] === commitId) {
+                const branchLabel = document.createElement('div');
+                branchLabel.className = `branch-label ${branchName.replace('/', '-')}`;
+                branchLabel.textContent = branchName;
+                
+                if (repoState.HEAD === branchName) {
+                    branchLabel.innerHTML += ' <span class="head-pointer">HEAD</span>';
+                    branchLabel.classList.add('head');
+                }
+                
+                if (branchName !== 'main') {
+                    branchLabel.style.top = `${45 + labelOffset * 30}px`;
+                    labelOffset++;
+                }
+
+                commitNode.appendChild(branchLabel);
+            }
+        }
+        commitLine.appendChild(commitNode);
+    });
+    
+    graphDiv.appendChild(commitLine);
+    container.appendChild(graphDiv);
+    container.style.display = 'block';
+}
+
 
 function showHint(button) {
     const hintText = button.closest('.terminal-line').nextElementSibling;
@@ -19,23 +115,28 @@ function showHint(button) {
 
 function updateProgressBar() {
     const progressFill = document.getElementById('progress');
+    const completedCount = Object.keys(progress).length;
     if (progressFill) {
-        const newProgress = (completedChapters.size / totalChapters) * 100;
+        const newProgress = (completedCount / totalChapters) * 100;
         progressFill.style.width = newProgress + '%';
     }
 }
 
 function updateProgressAndCompletion(chapterNumberStr) {
     const chapterNumber = parseInt(chapterNumberStr, 10);
-    if (completedChapters.has(chapterNumber)) return;
     
-    completedChapters.add(chapterNumber);
+    progress[chapterNumber] = { completed: true, timestamp: Date.now() };
+
     const chapterElement = document.querySelector(`.chapter[data-chapter="${chapterNumber}"]`);
-    if (chapterElement) chapterElement.classList.add('completed');
+    if (chapterElement) {
+        chapterElement.classList.add('completed');
+        chapterElement.classList.remove('review-due');
+    }
     
     updateProgressBar();
+    saveProgress();
 
-    if (completedChapters.size >= totalChapters) {
+    if (Object.keys(progress).length >= totalChapters) {
         setTimeout(showCelebration, 1000);
     }
 }
@@ -55,11 +156,9 @@ function closeCelebration() {
 function addTerminalLine(terminalContent, promptText, placeholder, expected, terminalId) {
     const newLine = document.createElement('div');
     newLine.className = 'terminal-line';
-
     const promptSpan = document.createElement('span');
     promptSpan.className = 'prompt';
     promptSpan.textContent = promptText;
-
     const newInput = document.createElement('input');
     newInput.type = 'text';
     newInput.className = 'user-input';
@@ -68,29 +167,23 @@ function addTerminalLine(terminalContent, promptText, placeholder, expected, ter
     newInput.setAttribute('data-terminal', terminalId);
     newInput.autocomplete = 'off';
     newInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') handleCommand(this); });
-    
     const hintButton = document.createElement('button');
     hintButton.className = 'hint-button';
     hintButton.textContent = '💡';
     hintButton.onclick = function() { showHint(this); };
-
     const resetButton = document.createElement('button');
     resetButton.className = 'reset-button';
     resetButton.textContent = '🔄';
     resetButton.onclick = function() { resetChapter(this); };
-
     newLine.appendChild(promptSpan);
     newLine.appendChild(newInput);
     newLine.appendChild(hintButton);
     newLine.appendChild(resetButton);
-    
     terminalContent.appendChild(newLine);
-
     const hintDiv = document.createElement('div');
     hintDiv.className = 'hint-text';
     hintDiv.textContent = `Type: ${expected}`;
     terminalContent.appendChild(hintDiv);
-
     newInput.focus();
 }
 
@@ -98,13 +191,14 @@ function resetChapter(button) {
     const chapterElement = button.closest('.chapter');
     const chapterNum = parseInt(chapterElement.getAttribute('data-chapter'), 10);
     
-    completedChapters.delete(chapterNum);
+    delete progress[chapterNum];
+
     chapterElement.classList.remove('completed');
+    chapterElement.classList.remove('review-due');
     
     const terminalContent = chapterElement.querySelector('.terminal-content');
     const firstLine = terminalContent.querySelector('.terminal-line');
     
-    // Remove everything after the first interactive line and its hint
     while (firstLine.nextSibling && firstLine.nextSibling.nextSibling) {
         terminalContent.removeChild(firstLine.nextSibling.nextSibling);
     }
@@ -114,7 +208,9 @@ function resetChapter(button) {
     input.disabled = false;
     
     chapterElement.querySelectorAll('.command-variations').forEach(el => el.style.display = 'none');
+    
     updateProgressBar();
+    saveProgress();
 }
 
 function resolveConflict(chapterId) {
@@ -175,26 +271,37 @@ function handleCommand(input) {
     const expected = input.getAttribute('data-expected');
     const userInput = input.value.trim();
     const terminalId = input.getAttribute('data-terminal');
+    const chapterElement = input.closest('.chapter');
+    const chapterNum = chapterElement.getAttribute('data-chapter');
     const terminalContent = input.closest('.terminal-content');
-    const prevError = terminalContent.querySelector('.error');
-    if (prevError) prevError.remove();
+    const graphContainer = chapterElement.querySelector('.git-graph-container');
 
-    const isDynamicCommand = expected.includes("'Your Name'");
-    const dynamicRegex = new RegExp(expected.replace(/'Your Name'/, "'(.*?)'"));
-    const match = userInput.match(dynamicRegex);
-    
-    if (userInput.toLowerCase() === expected.toLowerCase() || (isDynamicCommand && match)) {
+    if (userInput.toLowerCase().startsWith(expected.toLowerCase().split(' ').slice(0, 2).join(' '))) {
+        
+        let commandHandled = false;
+        switch (terminalId) {
+            case '5':
+                gitRepo.commits['c2'] = { parent: 'c1', msg: 'A new commit' };
+                gitRepo.branches.main = 'c2';
+                commandHandled = true;
+                break;
+            case '7':
+                gitRepo.branches['feature/login'] = gitRepo.branches[gitRepo.HEAD];
+                commandHandled = true;
+                break;
+        }
+
         const output = document.createElement('div');
         output.className = 'output success';
         output.innerHTML = getSuccessMessage(expected);
         input.parentElement.insertAdjacentElement('afterend', output);
         input.disabled = true;
 
-        const chapterElement = input.closest('.chapter');
-        const chapterNum = chapterElement.getAttribute('data-chapter');
+        if (commandHandled && graphContainer) {
+            renderGraph(graphContainer, gitRepo);
+        }
+        
         let nextStep = null;
-
-        // Define multi-step sequences
         switch (terminalId) {
             case '0':
                 nextStep = () => addTerminalLine(terminalContent, '~ $', "Set your email: git config --global user.email 'you@example.com'", "git config --global user.email 'you@example.com'", '0-2');
@@ -202,30 +309,20 @@ function handleCommand(input) {
             case '7':
                 nextStep = () => addTerminalLine(terminalContent, 'main $', 'Switch to the new branch: git switch feature/login', 'git switch feature/login', '7-2');
                 break;
-            case '8':
-                nextStep = () => addTerminalLine(terminalContent, 'feature/login $', 'Bring your work back: git stash pop', 'git stash pop', '8-2');
-                break;
-            case '14-2':
-                 nextStep = () => addTerminalLine(terminalContent, 'main $', "Finish the merge: git commit -m 'Merge feature/login'", "git commit -m 'Merge feature/login'", '14-3');
-                 break;
         }
 
         if (nextStep) {
             setTimeout(nextStep, 1000);
         } else {
             updateProgressAndCompletion(chapterNum);
-            // Show command variations on the final step of any chapter
             const variationsBoxes = chapterElement.querySelectorAll('.command-variations');
             if(variationsBoxes.length > 0) {
                 setTimeout(() => {
-                    variationsBoxes.forEach(box => {
-                        box.style.display = 'block';
-                    });
+                    variationsBoxes.forEach(box => box.style.display = 'block');
                     variationsBoxes[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 500);
             }
         }
-
     } else {
         const error = document.createElement('div');
         error.className = 'output error';
