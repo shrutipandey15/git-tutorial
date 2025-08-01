@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev's Dread - A Git Horror Story</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    <div class="celebration" id="celebration">
+        <h2 style="color: #9b59b6; margin-bottom: 15px;">🎉 The Nightmare is Complete</h2>
+        <p>You've survived the Git tutorial. Kael is now a barely functional developer who won't immediately destroy the main branch.</p>
+        <div style="margin: 20px 0;">
+            <p style="font-size: 0.9rem; opacity: 0.8;">Commands mastered: <span id="commandCount">0</span>/26</p>
+        </div>
+        <button onclick="closeCelebration()" style="margin-top: 15px; padding: 10px 20px; background: #9b59b6; color: #ecf0f1; border: none; border-radius: 5px; cursor: pointer;">Enter the Professional World</button>
+    </div>
+    <div class="container">
+        <div class="story-header">
+            <h1>Dev's Dread</h1>
+            <p style="font-size: 1.2rem; opacity: 0.9;">A Git Horror Story</p>
+            <p style="font-size: 1rem; opacity: 0.7; margin-top: 10px;">An interactive tutorial disguised as existential dread</p>
+        </div>
+        <div class="character-intro">
+            <div class="character-avatar">💀</div>
+            <div>
+                <h2 style="color: #e74c3c; margin-bottom: 10px;">Meet Kael</h2>
+                <p>Kael, a developer whose optimism died during his first JavaScript framework tutorial, has somehow landed a job. He's fueled by cold brew and the quiet terror of being exposed as a fraud. His primary career goal is to avoid breaking the main branch.</p>
+                <p style="margin-top: 10px; opacity: 0.8;">Today, he learns about Git, the source of all his future suffering.</p>
+            </div>
+        </div>
+        <div class="git-cheatsheet">
+            <h3 style="color: #9b59b6; margin-bottom: 15px;">🔮 Git Commands You'll Master</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px;">
+                <div><code>git config</code> - Set your identity</div>
+                <div><code>git clone</code> - Steal someone's work</div>
+                <div><code>git init</code> - Start the nightmare</div>
+                <div><code>git status</code> - See what you've broken</div>
+                <div><code>git add</code> - Stage your mistakes</div>
+                <div><code>git commit</code> - Make it permanent</div>
+                <div><code>git log</code> - Review your failures</div>
+                <div><code>git branch</code> - Create parallel suffering</div>
+                <div><code>git switch</code> - Jump between realities</div>
+                <div><code>git stash</code> - Hide your mess</div>
+                <div><code>git merge</code> - Combine the chaos</div>
+                <div><code>git remote</code> - Connect to the cloud</div>
+                <div><code>git push</code> - Share your pain</div>
+                <div><code>git fetch</code> - Scout the changes</div>
+                <div><code>git pull</code> - Import others' pain</div>
+                <div><code>git reset</code> - Undo local mistakes</div>
+                <div><code>git revert</code> - Undo public mistakes</div>
+                <div><code>git diff</code> - Inspect your changes</div>
+                <div><code>git clean</code> - Nuke untracked files</div>
+                <div><code>git rebase</code> - Rewrite history</div>
+                <div><code>git cherry-pick</code> - Steal a commit</div>
+                <div><code>git reflog</code> - The time machine</div>
+                <div><code>git blame</code> - Find the culprit</div>
+                <div><code>git tag</code> - Mark a release</div>
+                <div><code>git bisect</code> - Hunt the bug</div>
+                <div><code>git worktree</code> - Clone your workspace</div>
+            </div>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+        <div class="chapter" data-chapter="0">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 0: First Contact</div>
+            <div class="kael-dialogue">"They said I need to set up Git before I can do anything. Something about telling it who I am. Why does version control need my personal information? Is this some kind of surveillance?"</div>
+            <div class="seraphina-tip"><strong>Seraphina (Senior Dev, Dead Inside):</strong> "Just tell Git your name and email. Every commit needs an author so we know who to blame later. Don't overthink it."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Sets your identity for all Git commits. This info gets baked into every commit you make, so use your real name and work email.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal0">
+                    <div class="terminal-line">
+                        <span class="prompt">~ $</span>
+                        <input type="text" class="user-input" placeholder="Identify yourself: git config --global user.name 'Your Name'" data-expected="git config --global user.name 'Your Name'" data-terminal="0" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type exactly: git config --global user.name 'Your Name'</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git config` Variations</h4>
+                <p><code>git config --global user.name "Name"</code>: Sets your name globally for all repositories.</p>
+                <p><code>git config --local user.email "email"</code>: Sets email for just the current repository. Useful for work vs personal projects.</p>
+                <p><code>git config --list</code>: Shows all your current Git settings. Good for checking what you've configured.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="1">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 1: Stealing Someone Else's Nightmare</div>
+            <div class="kael-dialogue">"My first day and they want me to work on an existing project. How do I get their code onto my machine without breaking everything before I even start?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Use <code>git clone</code>. It downloads a complete copy of someone else's repository. It's like photocopying a book, but for code. And yes, you get all their mistakes too."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Downloads a complete copy of a remote repository to your local machine. This is how most developers start working on existing projects.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal1">
+                    <div class="terminal-line">
+                        <span class="prompt">~/projects $</span>
+                        <input type="text" class="user-input" placeholder="Acquire the codebase: git clone https://github.com/company/project.git" data-expected="git clone https://github.com/company/project.git" data-terminal="1" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git clone https://github.com/company/project.git</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git clone` Variations</h4>
+                <p><code>git clone &lt;url&gt;</code>: Clones into a folder named after the repository.</p>
+                <p><code>git clone &lt;url&gt; my-folder</code>: Clones into a folder with a custom name.</p>
+                <p><code>git clone --depth 1 &lt;url&gt;</code>: "Shallow clone" - gets only the latest commit, not the full history. Faster for huge repositories.</p>
+            </div>
+        </div>
+        <div class="section-divider">
+            <span>LOCAL REPOSITORY BASICS</span>
+        </div>
+        <div class="chapter" data-chapter="2">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 2: Creating Your Own Nightmare</div>
+            <div class="kael-dialogue">"Sometimes I need to start a project from scratch. Do I really have to go through the whole GitHub website dance just to track my files?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "No. <code>git init</code> creates a new repository right where you are. It's like saying 'Git, please start judging my work from this moment forward.'"</div>
+            <div class="command-explanation"><strong>What this does:</strong> Initializes a new Git repository in your current directory. Creates the hidden .git folder where all the Git magic happens.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal2">
+                    <div class="terminal-line">
+                        <span class="prompt">~/new-project $</span>
+                        <input type="text" class="user-input" placeholder="Begin the suffering: git init" data-expected="git init" data-terminal="2" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git init</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git init` Variations</h4>
+                <p><code>git init</code>: Initializes in the current directory.</p>
+                <p><code>git init my-project</code>: Creates a new directory called 'my-project' and initializes Git inside it.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="3">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 3: The All-Seeing Eye</div>
+            <div class="kael-dialogue">"I changed some files but now I'm paralyzed with fear. What did I touch? What's Git angry about? Should I just delete everything and start over?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Before you have your daily breakdown, just ask Git what's happening. <code>git status</code> is your panic button. It shows you exactly what you've touched and what Git thinks about it."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Shows the current state of your working directory and staging area. Your most important command for staying sane.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal3">
+                    <div class="terminal-line">
+                        <span class="prompt">~/new-project $</span>
+                        <input type="text" class="user-input" placeholder="Check your damage: git status" data-expected="git status" data-terminal="3" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git status</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git status` Variations</h4>
+                <p><code>git status -s</code> or <code>git status --short</code>: Compact one-line-per-file format. You'll use this constantly once comfortable.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="4">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 4: The Staging Ritual</div>
+            <div class="kael-dialogue">"Why can't I just commit files directly? Why do I have to 'add' them to some mystical staging area first? This feels unnecessarily complicated."</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Because Git wants you to be intentional about what you commit. The staging area lets you craft perfect commits instead of just dumping everything. Use <code>git add</code> to select which changes deserve to be permanent."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Moves changes from your working directory to the staging area, preparing them for commit. Think "select these changes for the next save."</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal4">
+                    <div class="terminal-line">
+                        <span class="prompt">~/new-project $</span>
+                        <input type="text" class="user-input" placeholder="Select your sacrifice: git add README.md" data-expected="git add README.md" data-terminal="4" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git add README.md</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git add` Variations</h4>
+                <p><code>git add .</code>: Stages all changes in current directory and subdirectories. Your go-to "stage everything" command.</p>
+                <p><code>git add -p</code>: Interactive mode - lets you stage parts of files. Perfect for crafting clean commits.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="5">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 5: Making It Permanent</div>
+            <div class="kael-dialogue">"Okay, I've added the file. Now what? How do I actually save this snapshot? And why does everyone keep talking about 'commit messages'?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Now you <code>commit</code>. That creates a permanent snapshot of your staged changes. The message describes what you did, so future you (or your teammates) can understand why this commit exists. Write something useful, not 'fixed stuff'."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Creates a permanent snapshot of your staged changes with a descriptive message. This becomes part of your project's history forever.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal5">
+                    <div class="terminal-line">
+                        <span class="prompt">~/new-project $</span>
+                        <input type="text" class="user-input" placeholder="Seal the deal: git commit -m 'Add initial README'" data-expected="git commit -m 'Add initial README'" data-terminal="5" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git commit -m 'Add initial README'</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git commit` Variations</h4>
+                <p><code>git commit</code>: Opens your text editor for a longer, more detailed commit message. Better for complex changes.</p>
+                <p><code>git commit --amend</code>: Modifies the last commit instead of creating a new one. Perfect for fixing typos in commit messages.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="6">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 6: Reviewing Your Trail of Tears</div>
+            <div class="kael-dialogue">"I've been committing changes, but I have no idea what I did yesterday. Or an hour ago. How can I see the history of my own poor decisions?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Meet <code>git log</code>, your personal museum of regret. It shows every commit in reverse chronological order. You can see what you changed, when, and what excuse you made in the commit message."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Shows the commit history of your repository. Each commit displays its hash, author, date, and message.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal6">
+                    <div class="terminal-line">
+                        <span class="prompt">~/new-project $</span>
+                        <input type="text" class="user-input" placeholder="Review your history: git log" data-expected="git log" data-terminal="6" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git log (press 'q' to quit in a real terminal)</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git log` Variations</h4>
+                <p><code>git log --oneline</code>: Compact one-line-per-commit view. Much easier to scan.</p>
+                <p><code>git log --graph</code>: Shows ASCII art of branch structure. Essential for understanding complex histories.</p>
+            </div>
+        </div>
+        <div class="section-divider">
+            <span>BRANCHING & WORKFLOW</span>
+        </div>
+        <div class="chapter" data-chapter="7">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 7: Creating Parallel Universes</div>
+            <div class="kael-dialogue">"I need to work on a new feature, but I'm terrified I'll break the main code. Is there a way to work in isolation, like a safe sandbox where I can't destroy everything?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Yes, it's called a <code>branch</code>. Think of it as a parallel timeline where you can experiment without affecting the main universe. Create one with <code>git branch</code>, then jump into it with <code>git switch</code>."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Creates a new branch (timeline) where you can work independently. The main branch stays safe while you experiment.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal7">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Create a new timeline: git branch feature/login" data-expected="git branch feature/login" data-terminal="7" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git branch feature/login</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git branch` and `git switch`</h4>
+                <p><code>git branch</code>: Lists all local branches.</p>
+                <p><code>git switch &lt;name&gt;</code>: Switches to an existing branch.</p>
+                <p><code>git switch -c &lt;name&gt;</code>: Creates a new branch and switches to it in one command. This is the one you'll use most often.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="8">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 8: The Quick Escape Hatch</div>
+            <div class="kael-dialogue">"I'm working on this feature but suddenly there's a critical bug on the main branch. I can't commit this half-finished mess, but I also can't lose my work. What do I do?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Perfect timing to learn <code>git stash</code>. It's like stuffing your messy work into a drawer so you can deal with the emergency. Your changes disappear temporarily, giving you a clean workspace. You can bring them back later with <code>git stash pop</code>."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Temporarily shelves your uncommitted changes, giving you a clean working directory. Essential for quick context switching.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal8">
+                    <div class="terminal-line">
+                        <span class="prompt">feature/login $</span>
+                        <input type="text" class="user-input" placeholder="Hide the evidence: git stash" data-expected="git stash" data-terminal="8" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git stash</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git stash` Variations</h4>
+                <p><code>git stash</code>: Saves your changes and cleans your working directory.</p>
+                <p><code>git stash pop</code>: Applies the most recent stash and removes it from the stash list.</p>
+            </div>
+        </div>
+        <div class="section-divider">
+            <span>REMOTE COLLABORATION</span>
+        </div>
+        <div class="chapter" data-chapter="9">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 9: Connecting to the Mothership</div>
+            <div class="kael-dialogue">"My laptop makes weird noises and I'm pretty sure it's dying. All my beautiful, terrible code is trapped on this machine. How do I get it somewhere safe?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "You need to connect to a remote repository - usually GitHub, GitLab, or company servers. Use <code>git remote add</code> to link your local repo to the cloud. Then your code becomes everyone else's problem too."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Links your local repository to a remote server where you can backup and share your code.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal9">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Link to the cloud: git remote add origin https://github.com/user/repo.git" data-expected="git remote add origin https://github.com/user/repo.git" data-terminal="9" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git remote add origin https://github.com/user/repo.git</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git remote` Variations</h4>
+                <p><code>git remote -v</code>: Lists all remotes with their URLs.</p>
+                <p><code>git remote set-url origin &lt;new-url&gt;</code>: Changes the URL of an existing remote.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="10">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 10: Uploading Your Suffering</div>
+            <div class="kael-dialogue">"I've connected to the remote repository, but my code is still only on my laptop. How do I actually send it to the server? And what if I break the entire company's codebase?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Use <code>git push</code> to upload your commits. The first time, use <code>git push -u origin main</code> to set the upstream. After that, just <code>git push</code> works. And relax - you probably won't break everything. Probably."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Uploads your local commits to the remote repository, sharing your work with the team (or backing it up).</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal10">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Launch into the cloud: git push -u origin main" data-expected="git push -u origin main" data-terminal="10" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git push -u origin main</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git push` Variations</h4>
+                <p><code>git push -u origin &lt;branch&gt;</code>: Sets the upstream and pushes. Do this the first time for each branch.</p>
+                <p><code>git push --force-with-lease</code>: Safer force push. Won't overwrite if someone else pushed in the meantime.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="11">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 11: Scouting the Territory</div>
+            <div class="kael-dialogue">"My teammates keep pushing changes, but I'm scared to just blindly pull them into my work. Is there a way to see what they did before I merge it with my stuff?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Smart question. Use <code>git fetch</code> first. It downloads the latest changes but doesn't merge them yet. Think of it as reconnaissance. You can inspect what changed with <code>git log origin/main</code> before deciding to merge."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Downloads the latest changes from the remote repository without merging them into your current branch. Safe way to see what's new.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal11">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Scout the changes: git fetch origin" data-expected="git fetch origin" data-terminal="11" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git fetch origin</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git fetch` Variations</h4>
+                <p><code>git fetch</code>: Fetches from the default remote (usually origin).</p>
+                <p><code>git fetch --all</code>: Fetches from all configured remotes.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="12">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 12: The Collaborative Nightmare</div>
+            <div class="kael-dialogue">"Okay, I've seen their changes and they look safe. Now how do I actually get them into my branch? Please tell me it's not going to explode."</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Use <code>git pull</code> to download and merge in one command. It's basically <code>git fetch</code> followed by <code>git merge</code>. Most of the time it works smoothly. When it doesn't... well, that's what makes this job interesting."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Downloads the latest changes from the remote repository and merges them into your current branch.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal12">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Import the chaos: git pull origin main" data-expected="git pull origin main" data-terminal="12" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git pull origin main</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git pull` Variations</h4>
+                <p><code>git pull --rebase</code>: Instead of merging, replays your commits on top of the pulled changes. Creates cleaner history.</p>
+                <p><code>git pull --no-rebase</code>: Forces a merge even if fast-forward is possible.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="13">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 13: Combining Timelines</div>
+            <div class="kael-dialogue">"I finished my feature branch and it's ready to go back to main. How do I combine my work with the main timeline without destroying everything?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Switch back to main, pull the latest changes, then use <code>git merge</code> to bring in your feature branch. If you're lucky, it'll be a 'fast-forward' merge and just work. If not... we'll deal with conflicts."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Combines the changes from one branch into another. The fundamental operation for integrating completed work.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal13">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Merge the timelines: git merge feature/login" data-expected="git merge feature/login" data-terminal="13" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git merge feature/login</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git merge` Variations</h4>
+                <p><code>git merge --no-ff &lt;branch&gt;</code>: Forces creation of a merge commit even for fast-forward merges. Preserves branch history.</p>
+                <p><code>git merge --abort</code>: Cancels a merge in progress and returns to the pre-merge state. Your escape hatch.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="14">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 14: When Worlds Collide</div>
+            <div class="kael-dialogue">"The merge failed! Git is screaming about 'CONFLICT' and there are weird symbols in my files. Did I break everything? Is this where my career ends?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Relax. Merge conflicts happen when the same lines were changed in both branches. Git marks the conflicting sections with <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>. Edit the file to keep what you want, remove the markers, then <code>git add</code> and <code>git commit</code>."</div>
+            <div class="command-explanation"><strong>What this is:</strong> A merge conflict occurs when Git can't automatically combine changes. You must manually resolve which changes to keep.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal14">
+                    <div class="output">
+                        <span class="warning">CONFLICT (content): Merge conflict in index.html</span><br>
+                        Automatic merge failed; fix conflicts and then commit the result.
+                    </div>
+                    <div class="conflict-editor" id="conflictEditor14">
+                        <p style="margin-bottom: 5px; font-size: 0.9em; color: #f39c12;">File: index.html (You must fix this)</p>
+                        <textarea id="conflictText14"><<<<<<< HEAD    <h1>Welcome to Our App</h1>=======    <h1>Welcome to the Login System</h1>>>>>>>> feature/login</textarea>
+                        <button onclick="resolveConflict('14')">I've fixed the conflict</button>
+                        <div class="output error" style="display:none; margin-top: 10px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-divider">
+            <span>MISTAKE RECOVERY & INSPECTION</span>
+        </div>
+        <div class="chapter" data-chapter="15">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 15: Inspecting Your Changes</div>
+            <div class="kael-dialogue">"I've been coding for hours and I can't remember what I actually changed. Before I commit this mess, how can I review exactly what I did?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Use <code>git diff</code> to see exactly what changed line by line. It shows additions in green and deletions in red. Think of it as your personal change inspector before you make anything permanent."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Shows the exact line-by-line differences between your working directory and the last commit (or between any two commits).</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal15">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Inspect your work: git diff" data-expected="git diff" data-terminal="15" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git diff</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git diff` Variations</h4>
+                <p><code>git diff</code>: Shows unstaged changes in your working directory.</p>
+                <p><code>git diff --staged</code>: Shows changes that are staged for commit.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="16">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 16: The Local Panic Button</div>
+            <div class="kael-dialogue">"I committed something terrible, but I haven't pushed it yet. Can I just make it disappear? Pretend it never happened?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Yes. If it's only on your machine, you can use <code>git reset</code> to erase it from history. It's like it never happened. Just don't ever do this to commits that others already have."</div>
+            <div class="command-explanation"><strong>What this does:</strong> <code>git reset</code> moves the branch pointer, effectively removing commits from your local history. It's powerful but dangerous if used on shared branches.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal16">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Erase the last local commit: git reset HEAD~1" data-expected="git reset HEAD~1" data-terminal="16" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git reset HEAD~1</div>
+                </div>
+            </div>
+            <div class="warning-box">
+                <h4>⚠️ Seraphina's Warning: The Reset Danger Zone</h4>
+                <p><code>git reset --hard</code> permanently deletes your changes. Only use it if you're absolutely sure you want to lose work.</p>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="17">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 17: The Public Panic Button</div>
+            <div class="kael-dialogue">"My terrible commit is already on the remote server! Everyone has it! I can't use `reset`. Is it over? Do I change my name and move to another country?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Stop packing. For shared mistakes, use <code>git revert</code>. It doesn't erase history. It creates a *new* commit that is the exact opposite of the bad one. It's the safe, responsible way to undo public changes."</div>
+            <div class="command-explanation"><strong>What this does:</strong> <code>git revert</code> creates a new commit that undoes the changes from a previous commit. It's the safe way to fix mistakes on shared branches.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal17">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Safely undo the last public commit: git revert HEAD" data-expected="git revert HEAD" data-terminal="17" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git revert HEAD</div>
+                </div>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="18">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 18: Nuclear Cleanup</div>
+            <div class="kael-dialogue">"My project directory is full of random files from testing - logs, temporary files, compiled binaries. It's chaos. How do I clean up this mess without accidentally deleting important stuff?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "<code>git clean</code> is your nuclear option for untracked files. ALWAYS run <code>git clean -n</code> first to see what it would delete. Then <code>git clean -f</code> to actually do it. It's irreversible, so don't be an idiot."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Removes untracked files from your working directory. Useful for getting a completely clean state.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal18">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="See what would be cleaned: git clean -n" data-expected="git clean -n" data-terminal="18" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git clean -n</div>
+                </div>
+            </div>
+            <div class="command-variations">
+                <h4>🔧 Seraphina's Pro-Tips: `git clean` Variations</h4>
+                <p><code>git clean -n</code>: Dry run. Shows what would be deleted without doing anything.</p>
+                <p><code>git clean -f</code>: Force. Deletes all untracked files.</p>
+            </div>
+        </div>
+        <div class="section-divider">
+            <span>ADVANCED GIT SORCERY</span>
+        </div>
+        <div class="chapter" data-chapter="19">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 19: Rewriting Your Past</div>
+            <div class="kael-dialogue">"My feature branch has like, eight commits that just say 'wip' or 'fix typo'. It's embarrassing. I wish I could just squash them all into one perfect, beautiful commit before I merge it."</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "You're ready for the dark arts. <code>git rebase -i</code> lets you rewrite your local history. You can squash commits, reword them, reorder them... anything. It makes your history clean and professional. Just promise me you'll never, ever rebase a branch that other people are using. That's how you summon unspeakable horrors."</div>
+            <div class="command-explanation"><strong>What this does:</strong> <code>git rebase</code> reapplies your commits on top of another branch, creating a clean, linear history. The interactive mode (<code>-i</code>) is a powerful tool for cleaning up your local commits before sharing them.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal19">
+                    <div class="terminal-line">
+                        <span class="prompt">feature/wip $</span>
+                        <input type="text" class="user-input" placeholder="Rewrite history: git rebase -i main" data-expected="git rebase -i main" data-terminal="19" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git rebase -i main</div>
+                </div>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="20">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 20: The Body Snatcher</div>
+            <div class="kael-dialogue">"There's this one perfect commit on someone else's branch that fixes a bug I have. I want just that one commit, not their whole chaotic branch!"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "To steal the commit, use <code>git cherry-pick</code>. It plucks a commit from anywhere and applies it to your branch. It's like a surgical strike for code."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Applies a single commit from another branch to your current branch.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal20">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Steal a commit: git cherry-pick a1b2c3d" data-expected="git cherry-pick a1b2c3d" data-terminal="20" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git cherry-pick a1b2c3d</div>
+                </div>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="21">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 21: The Ghost in the Machine</div>
+            <div class="kael-dialogue">"I ran `reset --hard` and deleted my work for the last hour. My life is over. I'm going to cry."</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Stop being dramatic and meet your guardian angel: <code>git reflog</code>. It's a secret log of everything you've done. Find the state before you messed up, and you can reset back to it. It's your real undo button."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Shows a log of all movements of HEAD, letting you recover from almost any mistake, including a bad reset.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal21">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Summon the ghosts: git reflog" data-expected="git reflog" data-terminal="21" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git reflog</div>
+                </div>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="22">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 22: The Archaeologist</div>
+            <div class="kael-dialogue">"This one line of code is completely insane, and I have no idea why it's there. I need to find the person who wrote it and ask them what they were thinking."</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "To find the author of a line, use <code>git blame</code>. It shows you who last touched each line of a file. It's not for blaming people, it's for... 'knowledge discovery'."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Shows line-by-line authorship of a file, including the commit hash and author for each line.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal22">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Find the culprit: git blame index.html" data-expected="git blame index.html" data-terminal="22" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git blame index.html</div>
+                </div>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="23">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 23: The Town Crier</div>
+            <div class="kael-dialogue">"We're finally shipping version 1.0! How do I mark this moment in our history forever?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "To mark a release, use <code>git tag</code>. It creates a permanent bookmark for a specific commit, like v1.0."</div>
+            <div class="command-explanation"><strong>What this does:</strong> Creates a permanent, named pointer to a specific commit, typically used for releases.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal23">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Mark the release: git tag -a v1.0 -m 'Version 1.0'" data-expected="git tag -a v1.0 -m 'Version 1.0'" data-terminal="23" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git tag -a v1.0 -m 'Version 1.0'</div>
+                </div>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="24">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 24: The Bug Hunter</div>
+            <div class="kael-dialogue">"I know the app worked fine last Tuesday, but today a critical feature is broken. There have been a hundred commits since then. How can I find the *exact* commit that broke it without testing every single one?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "Ah, the final trial. <code>git bisect</code>. You give it one 'good' commit where things worked, and one 'bad' commit where they don't. It then performs a binary search of your history, checking out the midpoint each time. You just test and tell it 'good' or 'bad'. In a few steps, it will pinpoint the exact commit that introduced the bug."</div>
+            <div class="command-explanation"><strong>What this does:</strong> <code>git bisect</code> is a debugging tool that automates a binary search through your commit history to find a specific change.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal24">
+                    <div class="terminal-line">
+                        <span class="prompt">main $</span>
+                        <input type="text" class="user-input" placeholder="Start the hunt: git bisect start" data-expected="git bisect start" data-terminal="24" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git bisect start</div>
+                </div>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="25">
+            <div class="completion-badge">✓ Done</div>
+            <div class="chapter-title">Chapter 25: Cloning Your Workspace</div>
+            <div class="kael-dialogue">"I need to work on a quick hotfix, but I'm in the middle of a huge feature and my directory is a mess. I can't stash. What do I do?"</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "For this, use <code>git worktree</code>. It lets you check out another branch into a completely separate folder without touching your current one. It's like having two project folders for the price of one. Clean, separate, and no stashing required."</div>
+            <div class="command-explanation"><strong>What this does:</strong> <code>git worktree</code> lets you manage multiple working directories for one repository.</div>
+            <div class="interactive-terminal">
+                <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
+                <div class="terminal-content" id="terminal25">
+                    <div class="terminal-line">
+                        <span class="prompt">feature/big-one $</span>
+                        <input type="text" class="user-input" placeholder="Create a parallel workspace: git worktree add ../hotfix" data-expected="git worktree add ../hotfix" data-terminal="25" autocomplete="off">
+                        <button class="hint-button" onclick="showHint(this)">💡</button>
+                        <button class="reset-button" onclick="resetChapter(this)">🔄</button>
+                    </div>
+                    <div class="hint-text">Type: git worktree add ../hotfix</div>
+                </div>
+            </div>
+        </div>
+        <div class="chapter" data-chapter="26">
+            <div class="chapter-title">Final Chapter: The End...?</div>
+            <div class="kael-dialogue">"So... that's it? I've survived. I know how to clone, branch, commit, push, pull, and fix my mistakes. I think... I think I might actually be a developer now."</div>
+            <div class="seraphina-tip"><strong>Seraphina:</strong> "You know the basics. The suffering never ends, it just gets more complex. But now you have the tools to manage it. The daily workflow is simple: pull, branch, code, add, commit, push, merge. Now go do that ten thousand times."</div>
+            <div class="command-explanation">
+                <strong>Congratulations!</strong> You've learned the essential Git commands. This isn't the end, but the beginning of using version control with confidence. Now go build something amazing.
+            </div>
+        </div>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>
