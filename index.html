@@ -72,14 +72,14 @@
             <div class="command-explanation"><strong>What this does:</strong> Sets your identity for all Git commits. This info gets baked into every commit you make, so use your real name and work email.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal0">
+                <div class="terminal" id="terminal0">
                     <div class="terminal-line">
                         <span class="prompt">~ $</span>
-                        <input type="text" class="user-input" placeholder="Identify yourself: git config --global user.name 'Your Name'" data-expected="git config --global user.name 'Your Name'" data-terminal="0" autocomplete="off">
+                        <input type="text" class="user-input" placeholder="Set your name: git config --global user.name 'Kael'" data-expected="git config --global user.name 'Kael'" data-terminal="0" autocomplete="off">
                         <button class="hint-button" onclick="showHint(this)">💡</button>
                         <button class="reset-button" onclick="resetChapter(this)">🔄</button>
                     </div>
-                    <div class="hint-text">Type exactly: git config --global user.name 'Your Name'</div>
+                    <div class="hint-text">Type: git config --global user.name 'Kael'</div>
                 </div>
             </div>
             <div class="command-variations">
@@ -97,14 +97,14 @@
             <div class="command-explanation"><strong>What this does:</strong> Downloads a complete copy of a remote repository to your local machine. This is how most developers start working on existing projects.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal1">
+                <div class="terminal" id="terminal1">
                     <div class="terminal-line">
-                        <span class="prompt">~/projects $</span>
-                        <input type="text" class="user-input" placeholder="Acquire the codebase: git clone https://github.com/company/project.git" data-expected="git clone https://github.com/company/project.git" data-terminal="1" autocomplete="off">
+                        <span class="prompt">~ $</span>
+                        <input type="text" class="user-input" placeholder="Clone the repo: git clone https://github.com/user/repo.git" data-expected="git clone https://github.com/user/repo.git" data-terminal="1" autocomplete="off">
                         <button class="hint-button" onclick="showHint(this)">💡</button>
                         <button class="reset-button" onclick="resetChapter(this)">🔄</button>
                     </div>
-                    <div class="hint-text">Type: git clone https://github.com/company/project.git</div>
+                    <div class="hint-text">Type: git clone https://github.com/user/repo.git</div>
                 </div>
             </div>
             <div class="command-variations">
@@ -125,7 +125,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Initializes a new Git repository in your current directory. Creates the hidden .git folder where all the Git magic happens.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal2">
+                <div class="terminal" id="terminal2">
                     <div class="terminal-line">
                         <span class="prompt">~/new-project $</span>
                         <input type="text" class="user-input" placeholder="Begin the suffering: git init" data-expected="git init" data-terminal="2" autocomplete="off">
@@ -149,7 +149,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Shows the current state of your working directory and staging area. Your most important command for staying sane.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal3">
+                <div class="terminal" id="terminal3">
                     <div class="terminal-line">
                         <span class="prompt">~/new-project $</span>
                         <input type="text" class="user-input" placeholder="Check your damage: git status" data-expected="git status" data-terminal="3" autocomplete="off">
@@ -172,7 +172,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Moves changes from your working directory to the staging area, preparing them for commit. Think "select these changes for the next save."</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal4">
+                <div class="terminal" id="terminal4">
                     <div class="terminal-line">
                         <span class="prompt">~/new-project $</span>
                         <input type="text" class="user-input" placeholder="Select your sacrifice: git add README.md" data-expected="git add README.md" data-terminal="4" autocomplete="off">
@@ -197,7 +197,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Creates a permanent snapshot of your staged changes with a descriptive message. This becomes part of your project's history forever.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal5">
+                <div class="terminal" id="terminal5">
                     <div class="terminal-line">
                         <span class="prompt">~/new-project $</span>
                         <input type="text" class="user-input" placeholder="Seal the deal: git commit -m 'Add initial README'" data-expected="git commit -m 'Add initial README'" data-terminal="5" autocomplete="off">
@@ -221,7 +221,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Shows the commit history of your repository. Each commit displays its hash, author, date, and message.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal6">
+                <div class="terminal" id="terminal6">
                     <div class="terminal-line">
                         <span class="prompt">~/new-project $</span>
                         <input type="text" class="user-input" placeholder="Review your history: git log" data-expected="git log" data-terminal="6" autocomplete="off">
@@ -249,7 +249,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Creates a new branch (timeline) where you can work independently. The main branch stays safe while you experiment.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal7">
+                <div class="terminal" id="terminal7">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Create a new timeline: git branch feature/login" data-expected="git branch feature/login" data-terminal="7" autocomplete="off">
@@ -274,7 +274,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Temporarily shelves your uncommitted changes, giving you a clean working directory. Essential for quick context switching.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal8">
+                <div class="terminal" id="terminal8">
                     <div class="terminal-line">
                         <span class="prompt">feature/login $</span>
                         <input type="text" class="user-input" placeholder="Hide the evidence: git stash" data-expected="git stash" data-terminal="8" autocomplete="off">
@@ -301,7 +301,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Links your local repository to a remote server where you can backup and share your code.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal9">
+                <div class="terminal" id="terminal9">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Link to the cloud: git remote add origin https://github.com/user/repo.git" data-expected="git remote add origin https://github.com/user/repo.git" data-terminal="9" autocomplete="off">
@@ -325,7 +325,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Uploads your local commits to the remote repository, sharing your work with the team (or backing it up).</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal10">
+                <div class="terminal" id="terminal10">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Launch into the cloud: git push -u origin main" data-expected="git push -u origin main" data-terminal="10" autocomplete="off">
@@ -349,7 +349,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Downloads the latest changes from the remote repository without merging them into your current branch. Safe way to see what's new.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal11">
+                <div class="terminal" id="terminal11">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Scout the changes: git fetch origin" data-expected="git fetch origin" data-terminal="11" autocomplete="off">
@@ -373,7 +373,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Downloads the latest changes from the remote repository and merges them into your current branch.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal12">
+                <div class="terminal" id="terminal12">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Import the chaos: git pull origin main" data-expected="git pull origin main" data-terminal="12" autocomplete="off">
@@ -397,7 +397,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Combines the changes from one branch into another. The fundamental operation for integrating completed work.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal13">
+                <div class="terminal" id="terminal13">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Merge the timelines: git merge feature/login" data-expected="git merge feature/login" data-terminal="13" autocomplete="off">
@@ -421,7 +421,7 @@
             <div class="command-explanation"><strong>What this is:</strong> A merge conflict occurs when Git can't automatically combine changes. You must manually resolve which changes to keep.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal14">
+                <div class="terminal" id="terminal14">
                     <div class="output">
                         <span class="warning">CONFLICT (content): Merge conflict in index.html</span><br>
                         Automatic merge failed; fix conflicts and then commit the result.
@@ -446,7 +446,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Shows the exact line-by-line differences between your working directory and the last commit (or between any two commits).</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal15">
+                <div class="terminal" id="terminal15">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Inspect your work: git diff" data-expected="git diff" data-terminal="15" autocomplete="off">
@@ -470,7 +470,7 @@
             <div class="command-explanation"><strong>What this does:</strong> <code>git reset</code> moves the branch pointer, effectively removing commits from your local history. It's powerful but dangerous if used on shared branches.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal16">
+                <div class="terminal" id="terminal16">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Erase the last local commit: git reset HEAD~1" data-expected="git reset HEAD~1" data-terminal="16" autocomplete="off">
@@ -493,7 +493,7 @@
             <div class="command-explanation"><strong>What this does:</strong> <code>git revert</code> creates a new commit that undoes the changes from a previous commit. It's the safe way to fix mistakes on shared branches.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal17">
+                <div class="terminal" id="terminal17">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Safely undo the last public commit: git revert HEAD" data-expected="git revert HEAD" data-terminal="17" autocomplete="off">
@@ -512,7 +512,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Removes untracked files from your working directory. Useful for getting a completely clean state.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal18">
+                <div class="terminal" id="terminal18">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="See what would be cleaned: git clean -n" data-expected="git clean -n" data-terminal="18" autocomplete="off">
@@ -539,7 +539,7 @@
             <div class="command-explanation"><strong>What this does:</strong> <code>git rebase</code> reapplies your commits on top of another branch, creating a clean, linear history. The interactive mode (<code>-i</code>) is a powerful tool for cleaning up your local commits before sharing them.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal19">
+                <div class="terminal" id="terminal19">
                     <div class="terminal-line">
                         <span class="prompt">feature/wip $</span>
                         <input type="text" class="user-input" placeholder="Rewrite history: git rebase -i main" data-expected="git rebase -i main" data-terminal="19" autocomplete="off">
@@ -558,7 +558,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Applies a single commit from another branch to your current branch.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal20">
+                <div class="terminal" id="terminal20">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Steal a commit: git cherry-pick a1b2c3d" data-expected="git cherry-pick a1b2c3d" data-terminal="20" autocomplete="off">
@@ -577,7 +577,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Shows a log of all movements of HEAD, letting you recover from almost any mistake, including a bad reset.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal21">
+                <div class="terminal" id="terminal21">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Summon the ghosts: git reflog" data-expected="git reflog" data-terminal="21" autocomplete="off">
@@ -596,7 +596,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Shows line-by-line authorship of a file, including the commit hash and author for each line.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal22">
+                <div class="terminal" id="terminal22">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Find the culprit: git blame index.html" data-expected="git blame index.html" data-terminal="22" autocomplete="off">
@@ -615,7 +615,7 @@
             <div class="command-explanation"><strong>What this does:</strong> Creates a permanent, named pointer to a specific commit, typically used for releases.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal23">
+                <div class="terminal" id="terminal23">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Mark the release: git tag -a v1.0 -m 'Version 1.0'" data-expected="git tag -a v1.0 -m 'Version 1.0'" data-terminal="23" autocomplete="off">
@@ -634,7 +634,7 @@
             <div class="command-explanation"><strong>What this does:</strong> <code>git bisect</code> is a debugging tool that automates a binary search through your commit history to find a specific change.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal24">
+                <div class="terminal" id="terminal24">
                     <div class="terminal-line">
                         <span class="prompt">main $</span>
                         <input type="text" class="user-input" placeholder="Start the hunt: git bisect start" data-expected="git bisect start" data-terminal="24" autocomplete="off">
@@ -653,7 +653,7 @@
             <div class="command-explanation"><strong>What this does:</strong> <code>git worktree</code> lets you manage multiple working directories for one repository.</div>
             <div class="interactive-terminal">
                 <div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div>
-                <div class="terminal-content" id="terminal25">
+                <div class="terminal" id="terminal25">
                     <div class="terminal-line">
                         <span class="prompt">feature/big-one $</span>
                         <input type="text" class="user-input" placeholder="Create a parallel workspace: git worktree add ../hotfix" data-expected="git worktree add ../hotfix" data-terminal="25" autocomplete="off">

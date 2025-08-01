@@ -8,19 +8,24 @@ document.addEventListener('DOMContentLoaded', function() {
     loadProgress();
 
     document.querySelectorAll('.git-graph-container').forEach(container => {
-        renderGraph(container, gitRepo);
+        const chapterNum = container.closest('.chapter').dataset.chapter;
+        const initialState = getInitialRepoStateForChapter(chapterNum);
+        renderGraph(container, initialState);
     });
 });
 
 let gitRepo = {
     commits: {
-        'c0': { parent: null, msg: 'Initial state' },
-        'c1': { parent: 'c0', msg: 'Add initial README' }
+        'c0': { parent: null, msg: 'Initial commit' }
     },
     branches: {
-        'main': 'c1'
+        'main': 'c0'
     },
-    HEAD: 'main'
+    HEAD: 'main',
+    workingDirectory: {
+        'README.md': 'untracked'
+    },
+    stagingArea: {}
 };
 
 const totalChapters = document.querySelectorAll('.chapter[data-chapter]').length;
@@ -31,14 +36,12 @@ function loadProgress() {
     if (savedProgress) {
         progress = JSON.parse(savedProgress);
     }
-
-    const REVIEW_INTERVAL = 20 * 1000; // 20 seconds
+    const REVIEW_INTERVAL = 30 * 1000;
 
     document.querySelectorAll('.chapter[data-chapter]').forEach(chapter => {
         const chapterNum = chapter.dataset.chapter;
         if (progress[chapterNum]) {
             chapter.classList.add('completed');
-
             const timeSinceCompletion = Date.now() - progress[chapterNum].timestamp;
             if (timeSinceCompletion > REVIEW_INTERVAL) {
                 chapter.classList.add('review-due');
@@ -58,24 +61,39 @@ function renderGraph(container, repoState) {
     const graphDiv = document.createElement('div');
     graphDiv.className = 'git-graph';
     
-    let commitIds = new Set();
-    for (const branch in repoState.branches) {
-        let currentId = repoState.branches[branch];
-        while (currentId) {
-            commitIds.add(currentId);
-            currentId = repoState.commits[currentId].parent;
+    const commitMap = {};
+    Object.keys(repoState.commits).forEach(id => {
+        commitMap[id] = { ...repoState.commits[id], children: [], x: -1, y: 0 };
+    });
+
+    Object.keys(commitMap).forEach(id => {
+        const parentId = commitMap[id].parent;
+        if (parentId && commitMap[parentId]) {
+            commitMap[parentId].children.push(id);
+        }
+    });
+    
+    let x = 0;
+    function positionNode(id) {
+        if (commitMap[id].x === -1) {
+            if (commitMap[id].parent) {
+                positionNode(commitMap[id].parent);
+                commitMap[id].x = commitMap[commitMap[id].parent].x + 1;
+            } else {
+                commitMap[id].x = 0;
+            }
         }
     }
-    let commitChain = Array.from(commitIds).sort();
+    Object.keys(commitMap).forEach(id => positionNode(id));
 
     const commitLine = document.createElement('div');
     commitLine.className = 'commit-line';
 
-    commitChain.forEach((commitId, index) => {
+    Object.keys(commitMap).forEach(commitId => {
         const commitNode = document.createElement('div');
         commitNode.className = 'commit-node';
         commitNode.textContent = commitId;
-        commitNode.style.left = `${index * 80}px`;
+        commitNode.style.left = `${commitMap[commitId].x * 80}px`;
         
         let labelOffset = 0;
         for (const branchName in repoState.branches) {
@@ -85,14 +103,14 @@ function renderGraph(container, repoState) {
                 branchLabel.textContent = branchName;
                 
                 if (repoState.HEAD === branchName) {
-                    branchLabel.innerHTML += ' <span class="head-pointer">HEAD</span>';
+                    branchLabel.innerHTML += ' <span class="head-pointer">(HEAD)</span>';
                     branchLabel.classList.add('head');
                 }
                 
-                if (branchName !== 'main') {
-                    branchLabel.style.top = `${45 + labelOffset * 30}px`;
-                    labelOffset++;
+                if (labelOffset > 0) {
+                    branchLabel.style.top = `${45 + (labelOffset-1) * 30}px`;
                 }
+                labelOffset++;
 
                 commitNode.appendChild(branchLabel);
             }
@@ -102,13 +120,25 @@ function renderGraph(container, repoState) {
     
     graphDiv.appendChild(commitLine);
     container.appendChild(graphDiv);
-    container.style.display = 'block';
+    if(container.innerHTML !== '<h4>Git Graph</h4>') {
+         container.style.display = 'block';
+    }
 }
 
+function getInitialRepoStateForChapter(chapterNum) {
+    let chapterState = JSON.parse(JSON.stringify(gitRepo));
+    switch(parseInt(chapterNum)) {
+        case 5:
+            chapterState.workingDirectory = {};
+            chapterState.stagingArea = {'README.md': 'added'};
+            break;
+    }
+    return chapterState;
+}
 
 function showHint(button) {
     const hintText = button.closest('.terminal-line').nextElementSibling;
-    if (hintText && hintText.classList.contains('hint-text')) {
+    if (hintText) {
         hintText.style.display = hintText.style.display === 'block' ? 'none' : 'block';
     }
 }
@@ -124,18 +154,14 @@ function updateProgressBar() {
 
 function updateProgressAndCompletion(chapterNumberStr) {
     const chapterNumber = parseInt(chapterNumberStr, 10);
-    
     progress[chapterNumber] = { completed: true, timestamp: Date.now() };
-
     const chapterElement = document.querySelector(`.chapter[data-chapter="${chapterNumber}"]`);
     if (chapterElement) {
         chapterElement.classList.add('completed');
         chapterElement.classList.remove('review-due');
     }
-    
     updateProgressBar();
     saveProgress();
-
     if (Object.keys(progress).length >= totalChapters) {
         setTimeout(showCelebration, 1000);
     }
@@ -232,6 +258,27 @@ function resolveConflict(chapterId) {
         setTimeout(() => addTerminalLine(terminalContent, 'main $', "Stage the fix: git add index.html", "git add index.html", chapterId + '-2'), 1000);
     }
 }
+function getGitStatus() {
+    let output = `On branch ${gitRepo.HEAD}\n`;
+    let stagedFiles = Object.keys(gitRepo.stagingArea);
+    let unstagedFiles = Object.keys(gitRepo.workingDirectory);
+    if (stagedFiles.length > 0) {
+        output += '\nChanges to be committed:\n';
+        stagedFiles.forEach(file => {
+            output += `  <span class="status-staged">new file:   ${file}</span>\n`;
+        });
+    }
+    if (unstagedFiles.length > 0) {
+        output += '\nUntracked files:\n';
+        unstagedFiles.forEach(file => {
+            output += `  <span class="status-unstaged">${file}</span>\n`;
+        });
+    }
+    if (stagedFiles.length === 0 && unstagedFiles.length === 0) {
+        output += '\nnothing to commit, working tree clean';
+    }
+    return output;
+}
 
 function getSuccessMessage(command) {
     const cmdParts = command.toLowerCase().split(' ');
@@ -275,25 +322,52 @@ function handleCommand(input) {
     const chapterNum = chapterElement.getAttribute('data-chapter');
     const terminalContent = input.closest('.terminal-content');
     const graphContainer = chapterElement.querySelector('.git-graph-container');
+    const prevError = terminalContent.querySelector('.error');
+    if (prevError) prevError.remove();
 
-    if (userInput.toLowerCase().startsWith(expected.toLowerCase().split(' ').slice(0, 2).join(' '))) {
+    const normalizedUserInput = userInput.toLowerCase().replace(/\s+/g, ' ');
+    const normalizedExpected = expected.toLowerCase().replace(/\s+/g, ' ');
+
+    if (normalizedUserInput === normalizedExpected) {
         
-        let commandHandled = false;
+        let commandHandled = true;
+        let successMessage;
+
+        if (normalizedUserInput === 'git status') {
+            successMessage = getGitStatus();
+        } else {
+            successMessage = getSuccessMessage(expected);
+        }
+
         switch (terminalId) {
+            case '4':
+                if (gitRepo.workingDirectory['README.md']) {
+                    delete gitRepo.workingDirectory['README.md'];
+                    gitRepo.stagingArea['README.md'] = 'added';
+                }
+                break;
             case '5':
-                gitRepo.commits['c2'] = { parent: 'c1', msg: 'A new commit' };
-                gitRepo.branches.main = 'c2';
-                commandHandled = true;
+                if (Object.keys(gitRepo.stagingArea).length > 0) {
+                    const newCommitId = 'c' + (Object.keys(gitRepo.commits).length);
+                    const parentCommit = gitRepo.branches[gitRepo.HEAD];
+                    gitRepo.commits[newCommitId] = { parent: parentCommit, msg: 'A new commit' };
+                    gitRepo.branches[gitRepo.HEAD] = newCommitId;
+                    gitRepo.stagingArea = {};
+                }
                 break;
             case '7':
                 gitRepo.branches['feature/login'] = gitRepo.branches[gitRepo.HEAD];
-                commandHandled = true;
                 break;
+            case '7-2':
+                gitRepo.HEAD = 'feature/login';
+                break;
+            default:
+                commandHandled = false;
         }
 
         const output = document.createElement('div');
         output.className = 'output success';
-        output.innerHTML = getSuccessMessage(expected);
+        output.innerHTML = successMessage; // Use the dynamic or static message
         input.parentElement.insertAdjacentElement('afterend', output);
         input.disabled = true;
 
@@ -326,7 +400,7 @@ function handleCommand(input) {
     } else {
         const error = document.createElement('div');
         error.className = 'output error';
-        error.innerHTML = `❌ <strong>Command not recognized.</strong><br>Expected: <code>${expected}</code><br>You typed: <code>${userInput}</code><br>💡 <em>Try clicking the hint button if you're stuck!</em>`;
+        error.innerHTML = `❌ <strong>Command not recognized.</strong><br>Expected a command similar to: <code>${expected}</code><br>You typed: <code>${userInput}</code>`;
         input.parentElement.insertAdjacentElement('afterend', error);
         input.value = '';
         input.focus();
