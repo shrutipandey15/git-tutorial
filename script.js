@@ -5,16 +5,16 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.key === 'Enter') handleCommand(this);
         });
     });
-    loadProgress();
+
+    loadState();
 
     document.querySelectorAll('.git-graph-container').forEach(container => {
-        const chapterNum = container.closest('.chapter').dataset.chapter;
-        const initialState = getInitialRepoStateForChapter(chapterNum);
-        renderGraph(container, initialState);
+        renderGraph(container, gitRepo);
     });
 });
 
-let gitRepo = {
+// The state of the repository when the tutorial starts for the first time.
+const initialGitRepo = {
     commits: {
         'c0': { parent: null, msg: 'Initial commit' }
     },
@@ -27,16 +27,26 @@ let gitRepo = {
     },
     stagingArea: {}
 };
+let gitRepo = JSON.parse(JSON.stringify(initialGitRepo)); 
 
 const totalChapters = document.querySelectorAll('.chapter[data-chapter]').length;
 let progress = {};
 
-function loadProgress() {
+/**
+ * Loads the tutorial state (user progress and repo simulation) from localStorage.
+ */
+function loadState() {
     const savedProgress = localStorage.getItem('gitTutorialProgress');
     if (savedProgress) {
         progress = JSON.parse(savedProgress);
     }
-    const REVIEW_INTERVAL = 30 * 1000;
+
+    const savedRepoState = localStorage.getItem('gitTutorialRepoState');
+    if (savedRepoState) {
+        gitRepo = JSON.parse(savedRepoState);
+    }
+
+    const REVIEW_INTERVAL = 30 * 1000; 
 
     document.querySelectorAll('.chapter[data-chapter]').forEach(chapter => {
         const chapterNum = chapter.dataset.chapter;
@@ -51,13 +61,33 @@ function loadProgress() {
     updateProgressBar();
 }
 
-function saveProgress() {
+/**
+ * Saves the current tutorial state (progress and repo) to localStorage.
+ */
+function saveState() {
     localStorage.setItem('gitTutorialProgress', JSON.stringify(progress));
+    localStorage.setItem('gitTutorialRepoState', JSON.stringify(gitRepo));
 }
 
+/**
+ * Resets all progress and the repository simulation. Triggered by the global reset button.
+ */
+function resetAllProgress() {
+    if (confirm("Are you sure you want to reset all progress and start over? This cannot be undone.")) {
+        localStorage.removeItem('gitTutorialProgress');
+        localStorage.removeItem('gitTutorialRepoState');
+        window.location.reload();
+    }
+}
+
+/**
+ * Renders the visual Git graph in a given chapter's container.
+ * @param {HTMLElement} container - The div element to render the graph into.
+ * @param {object} repoState - The current state of the gitRepo object.
+ */
 function renderGraph(container, repoState) {
     if (!container) return;
-    container.innerHTML = '<h4>Git Graph</h4>';
+    container.innerHTML = '<h4>Git Graph</h4>'; // Reset container
     const graphDiv = document.createElement('div');
     graphDiv.className = 'git-graph';
     
@@ -73,7 +103,6 @@ function renderGraph(container, repoState) {
         }
     });
     
-    let x = 0;
     function positionNode(id) {
         if (commitMap[id].x === -1) {
             if (commitMap[id].parent) {
@@ -120,22 +149,16 @@ function renderGraph(container, repoState) {
     
     graphDiv.appendChild(commitLine);
     container.appendChild(graphDiv);
+    
     if(container.innerHTML !== '<h4>Git Graph</h4>') {
          container.style.display = 'block';
     }
 }
 
-function getInitialRepoStateForChapter(chapterNum) {
-    let chapterState = JSON.parse(JSON.stringify(gitRepo));
-    switch(parseInt(chapterNum)) {
-        case 5:
-            chapterState.workingDirectory = {};
-            chapterState.stagingArea = {'README.md': 'added'};
-            break;
-    }
-    return chapterState;
-}
-
+/**
+ * Toggles the visibility of a command's hint text.
+ * @param {HTMLElement} button - The hint button that was clicked.
+ */
 function showHint(button) {
     const hintText = button.closest('.terminal-line').nextElementSibling;
     if (hintText) {
@@ -143,6 +166,9 @@ function showHint(button) {
     }
 }
 
+/**
+ * Updates the main progress bar at the top of the page.
+ */
 function updateProgressBar() {
     const progressFill = document.getElementById('progress');
     const completedCount = Object.keys(progress).length;
@@ -152,6 +178,10 @@ function updateProgressBar() {
     }
 }
 
+/**
+ * Marks a chapter as complete and saves the state.
+ * @param {string} chapterNumberStr - The chapter number to mark as complete.
+ */
 function updateProgressAndCompletion(chapterNumberStr) {
     const chapterNumber = parseInt(chapterNumberStr, 10);
     progress[chapterNumber] = { completed: true, timestamp: Date.now() };
@@ -161,12 +191,16 @@ function updateProgressAndCompletion(chapterNumberStr) {
         chapterElement.classList.remove('review-due');
     }
     updateProgressBar();
-    saveProgress();
+    saveState(); 
+
     if (Object.keys(progress).length >= totalChapters) {
         setTimeout(showCelebration, 1000);
     }
 }
 
+/**
+ * Displays the final celebration message.
+ */
 function showCelebration() {
     const commandCountEl = document.getElementById('commandCount');
     if (commandCountEl) commandCountEl.textContent = document.querySelectorAll('.git-cheatsheet code').length;
@@ -174,17 +208,25 @@ function showCelebration() {
     document.getElementById('celebration').style.display = 'block';
 }
 
+/**
+ * Closes the final celebration message.
+ */
 function closeCelebration() {
     document.getElementById('overlay').style.display = 'none';
     document.getElementById('celebration').style.display = 'none';
 }
 
+/**
+ * Adds a new interactive line to a terminal for multi-step chapters.
+ */
 function addTerminalLine(terminalContent, promptText, placeholder, expected, terminalId) {
     const newLine = document.createElement('div');
     newLine.className = 'terminal-line';
+    
     const promptSpan = document.createElement('span');
     promptSpan.className = 'prompt';
     promptSpan.textContent = promptText;
+
     const newInput = document.createElement('input');
     newInput.type = 'text';
     newInput.className = 'user-input';
@@ -193,26 +235,30 @@ function addTerminalLine(terminalContent, promptText, placeholder, expected, ter
     newInput.setAttribute('data-terminal', terminalId);
     newInput.autocomplete = 'off';
     newInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') handleCommand(this); });
+    
     const hintButton = document.createElement('button');
     hintButton.className = 'hint-button';
     hintButton.textContent = '💡';
     hintButton.onclick = function() { showHint(this); };
-    const resetButton = document.createElement('button');
-    resetButton.className = 'reset-button';
-    resetButton.textContent = '🔄';
-    resetButton.onclick = function() { resetChapter(this); };
+    
     newLine.appendChild(promptSpan);
     newLine.appendChild(newInput);
     newLine.appendChild(hintButton);
-    newLine.appendChild(resetButton);
+    
     terminalContent.appendChild(newLine);
+
     const hintDiv = document.createElement('div');
     hintDiv.className = 'hint-text';
     hintDiv.textContent = `Type: ${expected}`;
     terminalContent.appendChild(hintDiv);
+    
     newInput.focus();
 }
 
+/**
+ * Resets the progress for a single chapter. Note: This does not reset the main repo state.
+ * @param {HTMLElement} button - The reset button that was clicked.
+ */
 function resetChapter(button) {
     const chapterElement = button.closest('.chapter');
     const chapterNum = parseInt(chapterElement.getAttribute('data-chapter'), 10);
@@ -222,11 +268,11 @@ function resetChapter(button) {
     chapterElement.classList.remove('completed');
     chapterElement.classList.remove('review-due');
     
-    const terminalContent = chapterElement.querySelector('.terminal-content');
+    const terminalContent = chapterElement.querySelector('.terminal');
     const firstLine = terminalContent.querySelector('.terminal-line');
     
-    while (firstLine.nextSibling && firstLine.nextSibling.nextSibling) {
-        terminalContent.removeChild(firstLine.nextSibling.nextSibling);
+    while (firstLine.nextSibling) {
+        terminalContent.removeChild(firstLine.nextSibling);
     }
     
     const input = firstLine.querySelector('input');
@@ -236,9 +282,13 @@ function resetChapter(button) {
     chapterElement.querySelectorAll('.command-variations').forEach(el => el.style.display = 'none');
     
     updateProgressBar();
-    saveProgress();
+    saveState();
 }
 
+/**
+ * Handles the logic for the interactive merge conflict editor.
+ * @param {string} chapterId - The ID of the chapter containing the conflict.
+ */
 function resolveConflict(chapterId) {
     const editor = document.getElementById(`conflictEditor${chapterId}`);
     const textarea = document.getElementById(`conflictText${chapterId}`);
@@ -258,6 +308,10 @@ function resolveConflict(chapterId) {
         setTimeout(() => addTerminalLine(terminalContent, 'main $', "Stage the fix: git add index.html", "git add index.html", chapterId + '-2'), 1000);
     }
 }
+
+/**
+ * Generates the output for a 'git status' command based on the current repo state.
+ */
 function getGitStatus() {
     let output = `On branch ${gitRepo.HEAD}\n`;
     let stagedFiles = Object.keys(gitRepo.stagingArea);
@@ -280,6 +334,10 @@ function getGitStatus() {
     return output;
 }
 
+/**
+ * Returns the appropriate success message for a given command.
+ * @param {string} command - The command that was successfully executed.
+ */
 function getSuccessMessage(command) {
     const cmdParts = command.toLowerCase().split(' ');
     const cmd = cmdParts[1];
@@ -287,7 +345,7 @@ function getSuccessMessage(command) {
         'config': `✓ Config value set. Now Git knows who to blame.`,
         'clone': `✓ Cloning into 'project'...\nRemote 'origin' set to URL.\nCongratulations, the code is now your problem.`,
         'init': `✓ Fine. A .git folder now exists. Don't touch it.`,
-        'status': `On branch main\n<span class="warning">Untracked files:</span>\n  (use "git add <file>..." to include in what will be committed)\n\n\t<span class="error">README.md</span>\n\nSee that? The red file is your new problem. Deal with it.`,
+        'status': getGitStatus(), 
         'add': `✓ 'README.md' is staged. Are you going to commit it this century?`,
         'commit': `✓ [main (root-commit) c1a2b3d] Add initial README\n 1 file changed, 1 insertion(+)\n create mode 100644 README.md`,
         'log': `commit c1a2b3d (HEAD -> main)\nAuthor: Your Name <you@example.com>\nDate:   Fri Aug 01 2025\n\n    Add initial README`,
@@ -314,14 +372,19 @@ function getSuccessMessage(command) {
     return messages[cmd] || `✓ Command executed, I guess.`;
 }
 
+/**
+ * The main handler for all user terminal input.
+ * @param {HTMLElement} input - The input element that triggered the command.
+ */
 function handleCommand(input) {
     const expected = input.getAttribute('data-expected');
     const userInput = input.value.trim();
     const terminalId = input.getAttribute('data-terminal');
     const chapterElement = input.closest('.chapter');
     const chapterNum = chapterElement.getAttribute('data-chapter');
-    const terminalContent = input.closest('.terminal-content');
+    const terminalContent = input.closest('.terminal');
     const graphContainer = chapterElement.querySelector('.git-graph-container');
+
     const prevError = terminalContent.querySelector('.error');
     if (prevError) prevError.remove();
 
@@ -330,15 +393,6 @@ function handleCommand(input) {
 
     if (normalizedUserInput === normalizedExpected) {
         
-        let commandHandled = true;
-        let successMessage;
-
-        if (normalizedUserInput === 'git status') {
-            successMessage = getGitStatus();
-        } else {
-            successMessage = getSuccessMessage(expected);
-        }
-
         switch (terminalId) {
             case '4':
                 if (gitRepo.workingDirectory['README.md']) {
@@ -346,11 +400,11 @@ function handleCommand(input) {
                     gitRepo.stagingArea['README.md'] = 'added';
                 }
                 break;
-            case '5':
+            case '5': 
                 if (Object.keys(gitRepo.stagingArea).length > 0) {
                     const newCommitId = 'c' + (Object.keys(gitRepo.commits).length);
                     const parentCommit = gitRepo.branches[gitRepo.HEAD];
-                    gitRepo.commits[newCommitId] = { parent: parentCommit, msg: 'A new commit' };
+                    gitRepo.commits[newCommitId] = { parent: parentCommit, msg: `Commit ${newCommitId}` };
                     gitRepo.branches[gitRepo.HEAD] = newCommitId;
                     gitRepo.stagingArea = {};
                 }
@@ -361,17 +415,16 @@ function handleCommand(input) {
             case '7-2':
                 gitRepo.HEAD = 'feature/login';
                 break;
-            default:
-                commandHandled = false;
         }
-
+        
+        const successMessage = getSuccessMessage(expected);
         const output = document.createElement('div');
-        output.className = 'output success';
-        output.innerHTML = successMessage; // Use the dynamic or static message
+        output.className = 'output'; 
+        output.innerHTML = successMessage;
         input.parentElement.insertAdjacentElement('afterend', output);
         input.disabled = true;
 
-        if (commandHandled && graphContainer) {
+        if (graphContainer) {
             renderGraph(graphContainer, gitRepo);
         }
         
@@ -391,7 +444,7 @@ function handleCommand(input) {
             updateProgressAndCompletion(chapterNum);
             const variationsBoxes = chapterElement.querySelectorAll('.command-variations');
             if(variationsBoxes.length > 0) {
-                setTimeout(() => {
+                 setTimeout(() => {
                     variationsBoxes.forEach(box => box.style.display = 'block');
                     variationsBoxes[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 500);
@@ -404,5 +457,44 @@ function handleCommand(input) {
         input.parentElement.insertAdjacentElement('afterend', error);
         input.value = '';
         input.focus();
+    }
+}
+
+/**
+ * Marks the .gitignore chapter as complete.
+ * @param {HTMLElement} button - The save button that was clicked.
+ */
+function completeGitignoreChapter(button) {
+    const chapterElement = button.closest('.chapter');
+    const chapterNum = chapterElement.dataset.chapter;
+    
+    button.disabled = true;
+    button.textContent = '✓ Saved!';
+    
+    updateProgressAndCompletion(chapterNum);
+    
+    const variationsBox = chapterElement.querySelector('.command-variations');
+    if (variationsBox) {
+        variationsBox.style.display = 'block';
+    }
+}
+
+/**
+ * Marks a conceptual chapter (like the PR chapter) as complete.
+ * @param {HTMLElement} button - The confirmation button that was clicked.
+ */
+function completeConceptualChapter(button) {
+    const chapterElement = button.closest('.chapter');
+    const chapterNum = chapterElement.dataset.chapter;
+
+    button.disabled = true;
+    button.textContent = '✓ Understood!';
+    button.style.background = '#27ae60';
+
+    updateProgressAndCompletion(chapterNum);
+
+    const variationsBox = chapterElement.querySelector('.command-variations');
+    if (variationsBox) {
+        variationsBox.style.display = 'block';
     }
 }
