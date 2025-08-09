@@ -78,6 +78,7 @@ body {
   display: flex;
   align-items: center;
   gap: 15px;
+  text-align: center;
 }
 .kael-dialogue {
   background: rgba(231, 76, 60, 0.1);
@@ -668,4 +669,13 @@ body {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+.chapter-illustration {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto 30px;
+  border-radius: 10px;
+  border: 1px solid #7f8c8d;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
